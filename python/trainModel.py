@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(device)
+print(torch.cuda.get_device_name(0))
 
 # load csv
 df = pd.read_csv("simulation_data.csv")
@@ -36,7 +38,7 @@ class SimDataset(Dataset):
 
 dataset = SimDataset(inputs, outputs)
 
-dataloader = DataLoader(dataset, batch_size=4096, shuffle=True, pin_memory=True)
+dataloader = DataLoader(dataset, batch_size=32768, shuffle=True, pin_memory=True)
 
 # define the network
 
@@ -63,7 +65,7 @@ loss_fn = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 # training loop
-EPOCHS = 1000
+EPOCHS = 50
 
 lossHistory = []
 
