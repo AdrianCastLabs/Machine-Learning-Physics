@@ -80,9 +80,9 @@ public class GravitySim : MonoBehaviour
                 float distanceSquared  = math.dot(direction, direction) + softening * softening;
                 float distance         = math.sqrt(distanceSquared);
                 float forceMagnitude   = mass / distanceSquared;
-                velocities[i]         += forceMagnitude * (direction / distance);
+                velocities[i]         += forceMagnitude * (direction / distance) * 0.01f;
             }
-            positions[i] += velocities[i];
+            positions[i] += velocities[i] * 0.01f;
         }
 
         
@@ -109,7 +109,7 @@ public class GravitySim : MonoBehaviour
         for (int i = 0; i < nBodies; i++)
         {
             positions[i] = Random.insideUnitCircle * spawnRadius;
-            velocities[i] = new Vector2(Random.Range(-0.01f, 0.01f), Random.Range(-0.01f, 0.01f));
+            velocities[i] = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
             gameObjects[i].transform.position = new Vector3(positions[i].x, positions[i].y, 0.0f);
         }
     }
