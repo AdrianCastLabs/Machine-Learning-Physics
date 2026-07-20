@@ -306,6 +306,9 @@ MonoBehaviour:
   softening: 0.5
   mass: 0.0001
   nBodies: 3
+  episodeLength: 300
+  numEpisodes: 5
+  episode: 0
   frame: 0
 --- !u!4 &609100019
 Transform:
