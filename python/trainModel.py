@@ -17,6 +17,14 @@ print(f"Columns: {list(df.columns)}")
 
 data = df.values.astype(np.float32)
 
+# normalize
+#mean = data.mean(axis=0)
+#std = data.std(axis=0)
+
+#std[std == 0] = 1
+
+#data = (data - mean) / std
+
 # build input/output pairs
 inputs = data[:-1]
 outputs = data[1:]
@@ -65,7 +73,7 @@ loss_fn = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 # training loop
-EPOCHS = 50
+EPOCHS = 100
 
 lossHistory = []
 

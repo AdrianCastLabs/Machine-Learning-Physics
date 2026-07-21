@@ -20,6 +20,7 @@ public class GravitySim : MonoBehaviour
     public int numEpisodes;
     public int episode;
 
+
     public int frame;
 
     private StreamWriter writer;

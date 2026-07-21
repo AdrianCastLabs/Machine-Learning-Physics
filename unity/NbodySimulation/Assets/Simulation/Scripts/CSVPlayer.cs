@@ -10,9 +10,12 @@ public class CSVPlayer : MonoBehaviour
     public Transform body3;
 
     public float frameRate;
+    public int framesCount;
 
     public List<Vector2[]> frames = new();
 
+    public bool playPositions;
+    
     public int currentFrame;
 
     private void Start()
@@ -33,17 +36,32 @@ public class CSVPlayer : MonoBehaviour
             frames.Add(frame);
         }
         
-        InvokeRepeating(nameof(NextFrame), 0, 1f / frameRate);
     }
 
+    float timer;
+
+    void Update()
+    {
+        timer += Time.deltaTime;
+
+        if (timer >= 1f / frameRate)
+        {
+            timer -= 1f / frameRate;
+            NextFrame();
+        }
+    }
+    
     void NextFrame()
     {
-        if (currentFrame >= frames.Count) return;
+        if (currentFrame >= framesCount) currentFrame -= framesCount;
 
-        body1.position = frames[currentFrame][0];
-        body2.position = frames[currentFrame][1];
-        body3.position = frames[currentFrame][2];
-
-        //currentFrame++;
+        if (currentFrame >= 0)
+        {
+            body1.position = frames[currentFrame][0];
+            body2.position = frames[currentFrame][1];
+            body3.position = frames[currentFrame][2];
+        }
+        
+        if (playPositions) currentFrame++;
     }
 }

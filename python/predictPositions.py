@@ -29,7 +29,7 @@ model.eval()
 df = pd.read_csv("simulation_data.csv")
 
 current_state = torch.tensor(
-    df.iloc[0].values.astype(np.float32),
+    df.iloc[200].values.astype(np.float32),
     device=device
 ).unsqueeze(0)
 
