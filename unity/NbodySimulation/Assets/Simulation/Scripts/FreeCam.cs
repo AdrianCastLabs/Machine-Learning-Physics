@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 public class FreeCam : MonoBehaviour
 {
     Vector3 dragOrigin;
-    
+
+    private void Start()
+    {
+        Camera.main.orthographicSize = Mathf.Max(0.1f, Camera.main.orthographicSize + 50);
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))

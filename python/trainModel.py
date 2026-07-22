@@ -22,7 +22,7 @@ valid_mask = frame_in_episode[:-1] != (episode_length - 1)
 
 # build input/output pairs
 inputs = data[:-1][valid_mask]
-outputs = data[1:][valid_mask]
+outputs = data[1:][valid_mask] - data[:-1][valid_mask]
 
 print(f"training pairs: {len(inputs)}")
 

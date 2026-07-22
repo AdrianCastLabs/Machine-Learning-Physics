@@ -29,7 +29,7 @@ model.eval()
 df = pd.read_csv("simulation_data.csv")
 
 current_state = torch.tensor(
-    df.iloc[499].values.astype(np.float32),
+    df.iloc[2350].values.astype(np.float32),
     device=device
 ).unsqueeze(0)
 
@@ -38,13 +38,13 @@ predictions = []
 with torch.no_grad():
     for i in range(500):
 
-        current_state = model(current_state)
+        current_state = current_state + model(current_state)
 
         predictions.append(
             current_state.squeeze(0).cpu().numpy()
         )
 
 pred_df = pd.DataFrame(predictions, columns=df.columns)
-pred_df.to_csv("predicted_positions.csv", index=False)
+pred_df.to_csv("../unity/NbodySimulation/Assets/StreamingAssets/predicted_positions.csv", index=False)
 
 print("Saved predicted positions")

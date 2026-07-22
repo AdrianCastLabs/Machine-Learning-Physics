@@ -524,8 +524,8 @@ MonoBehaviour:
   body2: {fileID: 169759433}
   body3: {fileID: 411380581}
   frameRate: 60
-  framesCount: 100
-  playPositions: 0
+  framesCount: 500
+  playPositions: 1
   currentFrame: 0
 --- !u!1 &1607886988
 GameObject:
