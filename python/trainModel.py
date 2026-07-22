@@ -5,10 +5,6 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 from torch.utils.data import Dataset, DataLoader
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(device)
-print(torch.cuda.get_device_name(0))
-
 # load csv
 df = pd.read_csv("simulation_data.csv")
 
@@ -17,17 +13,16 @@ print(f"Columns: {list(df.columns)}")
 
 data = df.values.astype(np.float32)
 
-# normalize
-#mean = data.mean(axis=0)
-#std = data.std(axis=0)
+episode_length = 100
 
-#std[std == 0] = 1
+n = len(data)
+frame_in_episode = np.arange(n) % episode_length
 
-#data = (data - mean) / std
+valid_mask = frame_in_episode[:-1] != (episode_length - 1)
 
 # build input/output pairs
-inputs = data[:-1]
-outputs = data[1:]
+inputs = data[:-1][valid_mask]
+outputs = data[1:][valid_mask]
 
 print(f"training pairs: {len(inputs)}")
 
@@ -46,7 +41,7 @@ class SimDataset(Dataset):
 
 dataset = SimDataset(inputs, outputs)
 
-dataloader = DataLoader(dataset, batch_size=32768, shuffle=True, pin_memory=True)
+dataloader = DataLoader(dataset, batch_size=32768, shuffle=True)
 
 # define the network
 
@@ -68,7 +63,7 @@ class GravityNet(nn.Module):
     def forward(self, x):
         return self.net(x)
 
-model = GravityNet().to(device)
+model = GravityNet()
 loss_fn = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
@@ -81,9 +76,6 @@ for epoch in range(EPOCHS):
     total_loss = 0.0
 
     for batch_inputs, batch_outputs in dataloader:
-        batch_inputs = batch_inputs.to(device, non_blocking=True)
-        batch_outputs = batch_outputs.to(device, non_blocking=True)
-
         predictions = model(batch_inputs)
         loss = loss_fn(predictions, batch_outputs)
 
@@ -105,16 +97,3 @@ print("\nmodel saved to gravity_model.pth")
 
 plt.plot(lossHistory)
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
