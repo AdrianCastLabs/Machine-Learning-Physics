@@ -82,18 +82,21 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 # training loop
 EPOCHS = 300
+NOISE_STD = 0.02
 
 lossHistory = []
 
 for epoch in range(EPOCHS):
     total_loss = 0.0
-
     for batch_inputs, batch_outputs in dataloader:
-        predictions = model(batch_inputs)
+        noisy_inputs = batch_inputs + torch.rand_like(batch_inputs) * NOISE_STD
+
+        predictions = model(noisy_inputs)
         loss = loss_fn(predictions, batch_outputs)
 
         optimizer.zero_grad()
         loss.backward()
+        torch.nn.utils.clip_grad_norm(model.parameters(), max_norm=1.0)
         optimizer.step()
 
         total_loss += loss.item()

@@ -489,8 +489,8 @@ MonoBehaviour:
   softening: 0.5
   mass: 2
   nBodies: 3
-  episodeLength: 100
-  numEpisodes: 1000
+  episodeLength: 500
+  numEpisodes: 100
   episode: 0
   frame: 0
 --- !u!4 &609100019
@@ -524,7 +524,7 @@ MonoBehaviour:
   body2: {fileID: 169759433}
   body3: {fileID: 411380581}
   frameRate: 200
-  framesCount: 500
+  framesCount: 2000
   playPositions: 1
   currentFrame: 0
 --- !u!1 &1607886988

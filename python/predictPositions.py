@@ -34,16 +34,20 @@ delta_std = torch.tensor(np.load("delta_std.npy"), device=device)
 df = pd.read_csv("simulation_data.csv")
 
 current_state = torch.tensor(
-    df.iloc[1305].values.astype(np.float32),
+    df.iloc[105].values.astype(np.float32),
     device=device
 ).unsqueeze(0)
+
+MAX_DELTA_STD = 5.0
 
 predictions = []
 
 with torch.no_grad():
-    for i in range(500):
+    for i in range(2000):
         normed_input = (current_state - input_mean) / input_std
         normed_delta = model(normed_input)
+
+        normed_delta = torch.clamp(normed_delta, -MAX_DELTA_STD, MAX_DELTA_STD)
 
         delta = normed_delta * delta_std + delta_mean
         current_state = current_state + delta
