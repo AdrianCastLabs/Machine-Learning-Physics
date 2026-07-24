@@ -17,7 +17,6 @@ episode_length = 100
 
 n = len(data)
 frame_in_episode = np.arange(n) % episode_length
-
 valid_mask = frame_in_episode[:-1] != (episode_length - 1)
 
 # build input/output pairs
@@ -25,6 +24,20 @@ inputs = data[:-1][valid_mask]
 outputs = data[1:][valid_mask] - data[:-1][valid_mask]
 
 print(f"training pairs: {len(inputs)}")
+
+# normalize
+input_mean = inputs.mean(axis=0)
+input_std = inputs.std(axis=0) + 1e-8
+delta_mean = outputs.mean(axis=0)
+delta_std = outputs.std(axis=0) + 1e-8
+
+inputs_norm = (inputs - input_mean) / input_std
+outputs_norm = (outputs - delta_mean) / delta_std
+
+np.save("input_mean.npy", input_mean)
+np.save("input_std.npy", input_std)
+np.save("delta_mean.npy", delta_mean)
+np.save("delta_std.npy", delta_std)
 
 # pytorch dataset
 class SimDataset(Dataset):
@@ -39,7 +52,7 @@ class SimDataset(Dataset):
         return self.X[idx], self.y[idx]
 
 
-dataset = SimDataset(inputs, outputs)
+dataset = SimDataset(inputs_norm, outputs_norm)
 
 dataloader = DataLoader(dataset, batch_size=32768, shuffle=True)
 
@@ -68,7 +81,7 @@ loss_fn = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 # training loop
-EPOCHS = 100
+EPOCHS = 300
 
 lossHistory = []
 

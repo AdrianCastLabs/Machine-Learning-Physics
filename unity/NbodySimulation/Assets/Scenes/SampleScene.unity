@@ -490,7 +490,7 @@ MonoBehaviour:
   mass: 2
   nBodies: 3
   episodeLength: 100
-  numEpisodes: 50
+  numEpisodes: 1000
   episode: 0
   frame: 0
 --- !u!4 &609100019
@@ -523,7 +523,7 @@ MonoBehaviour:
   body1: {fileID: 1607886990}
   body2: {fileID: 169759433}
   body3: {fileID: 411380581}
-  frameRate: 60
+  frameRate: 200
   framesCount: 500
   playPositions: 1
   currentFrame: 0

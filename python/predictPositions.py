@@ -26,10 +26,15 @@ model = GravityNet().to(device)
 model.load_state_dict(torch.load("gravity_model.pth", map_location=device))
 model.eval()
 
+input_mean = torch.tensor(np.load("input_mean.npy"), device=device)
+input_std = torch.tensor(np.load("input_std.npy"), device=device)
+delta_mean = torch.tensor(np.load("delta_mean.npy"), device=device)
+delta_std = torch.tensor(np.load("delta_std.npy"), device=device)
+
 df = pd.read_csv("simulation_data.csv")
 
 current_state = torch.tensor(
-    df.iloc[2350].values.astype(np.float32),
+    df.iloc[1305].values.astype(np.float32),
     device=device
 ).unsqueeze(0)
 
@@ -37,12 +42,13 @@ predictions = []
 
 with torch.no_grad():
     for i in range(500):
+        normed_input = (current_state - input_mean) / input_std
+        normed_delta = model(normed_input)
 
-        current_state = current_state + model(current_state)
+        delta = normed_delta * delta_std + delta_mean
+        current_state = current_state + delta
 
-        predictions.append(
-            current_state.squeeze(0).cpu().numpy()
-        )
+        predictions.append(current_state.squeeze(0).cpu().numpy())
 
 pred_df = pd.DataFrame(predictions, columns=df.columns)
 pred_df.to_csv("../unity/NbodySimulation/Assets/StreamingAssets/predicted_positions.csv", index=False)
