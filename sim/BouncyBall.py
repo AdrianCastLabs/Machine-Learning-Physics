@@ -1,4 +1,5 @@
-﻿import matplotlib.pyplot as plt
+﻿import csv
+import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 # ball properties
@@ -15,6 +16,8 @@ ax.set_aspect("equal")
 
 ball, = ax.plot(0, y, "o", markersize=20)
 
+data = []
+
 def update(frame):
     global y, v
 
@@ -26,7 +29,16 @@ def update(frame):
         v = -v * bounciness
 
     ball.set_data([0], [y])
+
+    data.append([y, v])
+
     return ball,
 
-animation = FuncAnimation(fig, update, frames=500, interval=20, blit=True)
+animation = FuncAnimation(fig, update, frames=5, interval=20, blit=True)
 plt.show()
+
+with open('../data/BouncyBallData.csv', "w", newline="") as file:
+    writer = csv.writer(file)
+    writer.writerow(["y, v"])
+    for row in data:
+        writer.writerow([f"{val:.4f}" for val in row])
