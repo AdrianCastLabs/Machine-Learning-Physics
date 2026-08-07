@@ -1,44 +1,38 @@
 ﻿import csv
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+import os
+import random
 
-# ball properties
-y = 8.0
-v = 0.0
+# simulation params
 g = -9.8
-dt = 0.02
-bounciness = 0.8
+dt = 0.04
+bounciness = 0.6
+frames_per_episode = 200
+num_episodes = 50
 
-fig, ax = plt.subplots()
-ax.set_xlim(-1, 1)
-ax.set_ylim(0, 10)
-ax.set_aspect("equal")
+data = []  # rows: [y, v, y_next, v_next]
 
-ball, = ax.plot(0, y, "o", markersize=20)
+for ep in range(num_episodes):
+    y = random.uniform(2.0, 10.0)  # random starting height
+    v = 0.0
 
-data = []
+    for i in range(frames_per_episode):
+        y_prev, v_prev = y, v
 
-def update(frame):
-    global y, v
+        v += g * dt
+        y += v * dt
 
-    v += g * dt
-    y += v * dt
+        if y <= 0.5:
+            y = 0.5
+            v = -v * bounciness
+            if abs(v) < abs(g * dt):
+                v = 0.0
 
-    if y <= 0.5:
-        y = 0.5
-        v = -v * bounciness
+        data.append([y_prev, v_prev, y, v])
 
-    ball.set_data([0], [y])
-
-    data.append([y, v])
-
-    return ball,
-
-animation = FuncAnimation(fig, update, frames=5, interval=20, blit=True)
-plt.show()
+os.makedirs('../data', exist_ok=True)
 
 with open('../data/BouncyBallData.csv', "w", newline="") as file:
     writer = csv.writer(file)
-    writer.writerow(["y, v"])
+    writer.writerow(["y", "v", "y_next", "v_next"])
     for row in data:
         writer.writerow([f"{val:.4f}" for val in row])
