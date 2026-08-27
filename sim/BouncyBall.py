@@ -6,8 +6,8 @@ import random
 g = -9.8
 dt = 0.04
 bounciness = 0.6
-frames_per_episode = 200
-num_episodes = 50
+frames_per_episode = 150
+num_episodes = 100
 
 data = []  # rows: [y, v, y_next, v_next]
 
@@ -31,7 +31,7 @@ for ep in range(num_episodes):
 
 os.makedirs('../data', exist_ok=True)
 
-with open('../data/BouncyBallData.csv', "w", newline="") as file:
+with open('../data/bouncy-ball-training-data.csv', "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerow(["y", "v", "y_next", "v_next"])
     for row in data:
