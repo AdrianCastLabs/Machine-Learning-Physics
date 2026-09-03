@@ -1,3 +1,4 @@
+import csv
 import random
 import numpy as np
 
@@ -9,9 +10,11 @@ num_episodes = 100
 frames_per_episode = 500
 spawnArea = 5
 
-data = [] # rows: [x1, y1, v1, v2, x2, y2, v1, v2]
+data = [] # rows: [x1, y1, vx1, vy1, x2, y2, vx2, vy2]
 
 for episode in range(num_episodes):
+    print(episode)
+
     positions = []
     velocities = []
 
@@ -40,4 +43,10 @@ for episode in range(num_episodes):
             positions[1][0], positions[1][1],
             velocities[1][0], velocities[1][1]])
 
-print(data)
+
+
+with open('../data/gravity-simulation-data.csv', "w", newline="") as file:
+    writer = csv.writer(file)
+    writer.writerow(["x1", "y1", "vx1", "vy1", "x2", "y2", "vx2", "vy2"])
+    for row in data:
+        writer.writerow([f"{val:.4f}" for val in row])
