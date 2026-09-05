@@ -4,11 +4,12 @@ import numpy as np
 
 rng = np.random.default_rng()
 
-g = 1
+g = 100
 dt = 0.02
-num_episodes = 100
-frames_per_episode = 500
+num_episodes = 50
+frames_per_episode = 250
 spawnArea = 5
+random_velocity = 2
 
 data = [] # rows: [x1, y1, vx1, vy1, x2, y2, vx2, vy2]
 
@@ -21,8 +22,8 @@ for episode in range(num_episodes):
     positions.append(rng.uniform(low = -spawnArea, high = spawnArea, size = 2))
     positions.append(rng.uniform(low = -spawnArea, high = spawnArea, size = 2))
 
-    velocities.append(np.zeros(2))
-    velocities.append(np.zeros(2))
+    velocities.append(rng.uniform(low = -random_velocity, high = random_velocity, size = 2))
+    velocities.append(rng.uniform(low = -random_velocity, high = random_velocity, size = 2))
 
     for frame in range(frames_per_episode):
         for i in range (len(positions)):
@@ -31,6 +32,7 @@ for episode in range(num_episodes):
 
                 direction = positions[j] - positions[i]
                 distance = np.linalg.norm(direction)
+                distance += 1
                 direction_normalized = direction / distance
                 force_magnitude = g / distance**2
 
