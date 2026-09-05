@@ -13,7 +13,7 @@ with open('../data/bouncy-ball-training-data.csv') as f:
     next(reader)
     for row in reader:
         rows.append([float(x) for x in row])
-
+    
 data = torch.tensor(rows, dtype=torch.float32)
 X_raw = data[:, :2]
 Y_raw = data[:, 2:] - data[:, :2]
