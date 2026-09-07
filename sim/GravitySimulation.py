@@ -6,7 +6,7 @@ rng = np.random.default_rng()
 
 g = 100
 dt = 0.02
-num_episodes = 50
+num_episodes = 5000
 frames_per_episode = 250
 spawnArea = 5
 random_velocity = 2
