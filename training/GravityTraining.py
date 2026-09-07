@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-epochs = 500
+epochs = 2000
 batch_frames = 100
 state_size = 8
 
@@ -77,7 +77,7 @@ for epoch in range(epochs):
     loss.backward()
     optimizer.step()
 
-    if epoch % 50 == 0:
+    if epoch % 1 == 0:
         print(f"epoch {epoch}, loss {loss:.6f}")
 
 torch.save({

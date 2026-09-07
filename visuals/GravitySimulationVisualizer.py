@@ -2,12 +2,12 @@ import csv
 import pygame
 
 # config
-WIDTH, HEIGHT = 700, 700
+WIDTH, HEIGHT = 900, 900
 FPS = 60
-FRAMES_PER_EPISODE = 2000
+FRAMES_PER_EPISODE = 500
 
-WORLD_MIN = -15.0
-WORLD_MAX = 15.0
+WORLD_MIN = -30.0
+WORLD_MAX = 30.0
 BODY_RADIUS = 8
 
 BODY_1_COLOR = (100, 180, 255)
@@ -20,6 +20,7 @@ TEXT_COLOR = (255, 255, 255)
 
 TRAIL_LENGTH = 0
 
+path = "../predictions/gravity-simulation-predictions.csv"
 
 def world_to_screen(x, y):
     t_x = (x - WORLD_MIN) / (WORLD_MAX - WORLD_MIN)
@@ -71,7 +72,6 @@ def draw_trail(screen, trail, color):
 
 
 def main():
-    path = "../predictions/gravity-simulation-predictions.csv"
     positions = load_positions(path)
 
     pygame.init()
