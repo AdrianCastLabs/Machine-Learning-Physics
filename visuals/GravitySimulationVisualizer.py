@@ -4,7 +4,7 @@ import pygame
 # config
 WIDTH, HEIGHT = 700, 700
 FPS = 60
-FRAMES_PER_EPISODE = 150
+FRAMES_PER_EPISODE = 2000
 
 WORLD_MIN = -15.0
 WORLD_MAX = 15.0
@@ -71,7 +71,7 @@ def draw_trail(screen, trail, color):
 
 
 def main():
-    path = "../data/gravity-simulation-predictions.csv"
+    path = "../predictions/gravity-simulation-predictions.csv"
     positions = load_positions(path)
 
     pygame.init()
