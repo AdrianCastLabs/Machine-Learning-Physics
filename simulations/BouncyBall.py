@@ -11,7 +11,7 @@ bounciness = 0.6
 frames_per_episode = 150
 num_episodes = 100
 
-output_path = Path('../data/bouncy-ball_training_data.csv')
+output_path = Path('../data/bouncy_ball_Simulation_data.csv')
 output_path.parent.mkdir(parents=True, exist_ok=True)
 
 data = []  # rows: [y, v, y_next, v_next]

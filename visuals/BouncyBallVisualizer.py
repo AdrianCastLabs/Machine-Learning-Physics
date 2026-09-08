@@ -30,7 +30,7 @@ def load_y_values(path):
         return [float(row[col]) for row in reader]
 
 def main():
-    path = "../data/bouncy_ball_predictions.csv"
+    path = "../predictions/bouncy_ball_predictions.csv"
     y_values = load_y_values(path)
 
     pygame.init()
