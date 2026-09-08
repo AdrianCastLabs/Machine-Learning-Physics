@@ -8,7 +8,7 @@ START_V = 0.0
 
 # load data
 rows = []
-with open('../data/bouncy-ball_training_data.csv') as f:
+with open('../data/bouncy_ball_simulation_data.csv') as f:
     reader = csv.reader(f)
     next(reader)
     for row in reader:
