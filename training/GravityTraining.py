@@ -7,7 +7,7 @@ epochs = 2000
 batch_frames = 100
 state_size = 8
 
-device = torch.device("cuda")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"using device: {device}")
 
 # load data

@@ -15,7 +15,7 @@ Y2_START = random.randrange(-4, 4)
 VX2_START = random.randrange(-4, 4)
 VY2_START = random.randrange(-4, 4)
 
-device = torch.device("cuda")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"using device: {device}")
 
 # load checkpoint
