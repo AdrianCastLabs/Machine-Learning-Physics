@@ -2,6 +2,7 @@
 import os
 import random
 from pathlib import Path
+from xml.etree.ElementTree import tostring
 
 # simulation params
 g = -9.8
@@ -18,6 +19,8 @@ data = []  # rows: [y, v, y_next, v_next]
 for ep in range(num_episodes):
     y = random.uniform(2.0, 10.0)  # random starting height
     v = 0.0
+
+    print(f"Episode: {ep}")
 
     for i in range(frames_per_episode):
         y_prev, v_prev = y, v
