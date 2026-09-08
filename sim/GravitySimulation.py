@@ -7,13 +7,13 @@ rng = np.random.default_rng()
 
 g = 100
 dt = 0.02
-num_episodes = 3000
+num_episodes = 2000
 frames_per_episode = 250
 spawnArea = 5
 random_velocity = 2
 
 output_path = Path('../data/gravity_simulation_data.csv')
-output_path.parent.mkdir(parents=True, exist_ok=True) # create output directory if it doesn't exist
+output_path.parent.mkdir(parents=True, exist_ok=True) # create output parent directory if it doesn't exist
 
 data = [] # rows: [x1, y1, vx1, vy1, x2, y2, vx2, vy2, x1_next, y1_next, vx1_next, vy1_next, x2_next, y2_next, vx2_next, vy2_next]
 

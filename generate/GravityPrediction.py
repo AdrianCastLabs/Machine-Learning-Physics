@@ -67,7 +67,7 @@ with torch.no_grad():
 
         state = predicted_states[-1].unsqueeze(0)
 
-with open('../predictions/gravity-simulation-predictions.csv', "w", newline="") as file:
+with open('../predictions/gravity_simulation_predictions.csv', "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerow(
         ["x1", "y1", "vx1", "vy1", "x2", "y2", "vx2", "vy2", "x1_next", "y1_next", "vx1_next", "vy1_next", "x2_next",

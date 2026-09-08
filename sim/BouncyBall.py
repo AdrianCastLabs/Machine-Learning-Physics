@@ -1,6 +1,7 @@
 ﻿import csv
 import os
 import random
+from pathlib import Path
 
 # simulation params
 g = -9.8
@@ -8,6 +9,9 @@ dt = 0.04
 bounciness = 0.6
 frames_per_episode = 150
 num_episodes = 100
+
+output_path = Path('../data/bouncy-ball_training_data.csv')
+output_path.parent.mkdir(parents=True, exist_ok=True)
 
 data = []  # rows: [y, v, y_next, v_next]
 
@@ -31,7 +35,7 @@ for ep in range(num_episodes):
 
 os.makedirs('../data', exist_ok=True)
 
-with open('../data/bouncy-ball-training-data.csv', "w", newline="") as file:
+with open(output_path, "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerow(["y", "v", "y_next", "v_next"])
     for row in data:

@@ -13,7 +13,7 @@ print(f"using device: {device}")
 # load data
 rows = []
 
-with open('../data/gravity-simulation-data.csv') as file:
+with open('../data/gravity_simulation_data.csv') as file:
     reader = csv.reader(file)
     next(reader)
     for row in reader:

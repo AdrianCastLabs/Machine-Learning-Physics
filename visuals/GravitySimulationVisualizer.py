@@ -20,7 +20,7 @@ TEXT_COLOR = (255, 255, 255)
 
 TRAIL_LENGTH = 0
 
-path = "../predictions/gravity-simulation-predictions.csv"
+path = "../predictions/gravity_simulation_predictions.csv"
 
 def world_to_screen(x, y):
     t_x = (x - WORLD_MIN) / (WORLD_MAX - WORLD_MIN)
