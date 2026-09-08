@@ -72,7 +72,7 @@ with torch.no_grad():
         generated.append([y_prev, v_prev, y_next, v_next])
         state = torch.tensor([[y_next, v_next]], dtype=torch.float32)
 
-with open('../data/bouncy_ball_predictions.csv', "w", newline="") as file:
+with open('../predictions/bouncy_ball_predictions.csv', "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerow(["y", "v", "y_next", "v_next"])
     for row in generated:
