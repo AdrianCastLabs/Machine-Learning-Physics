@@ -1,6 +1,7 @@
 import csv
 import torch
 import torch.nn as nn
+import matplotlib.pyplot as plt
 
 epochs = 2000
 N_FRAMES = 200
@@ -38,6 +39,8 @@ model = nn.Sequential(
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 loss_fn = nn.MSELoss()
 
+lossData = []
+
 # train
 for epoch in range(epochs):
     optimizer.zero_grad()
@@ -45,6 +48,8 @@ for epoch in range(epochs):
     loss = loss_fn(pred, Y)
     loss.backward()
     optimizer.step()
+
+    lossData.append(loss.item())
 
     if epoch % 50 == 0:
         print(f"epoch {epoch}, loss {loss}:.6f")
@@ -58,4 +63,9 @@ torch.save({
     }, "../models/bouncy_ball_model_checkpoint.pt")
 
 print("saved bouncy_ball_model_checkpoint.pt")
+
+plt.plot(lossData)
+plt.ylabel("loss")
+plt.xlabel("epochs")
+plt.show()
 
