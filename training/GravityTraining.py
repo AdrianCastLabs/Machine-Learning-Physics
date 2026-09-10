@@ -2,6 +2,7 @@ import csv
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import matplotlib.pyplot as plt
 
 epochs = 2000
 batch_frames = 100
@@ -66,6 +67,8 @@ scaler_dtype = torch.bfloat16
 
 # train
 
+lossData = []
+
 for epoch in range(epochs):
     optimizer.zero_grad(set_to_none=True)
 
@@ -76,6 +79,8 @@ for epoch in range(epochs):
 
     loss.backward()
     optimizer.step()
+
+    lossData.append(loss.item())
 
     if epoch % 1 == 0:
         print(f"epoch {epoch}, loss {loss:.6f}")
@@ -91,4 +96,9 @@ torch.save({
 }, "../models/gravity_model_checkpoint.pt")
 
 print("saved gravity_model_checkpoint.pt")
+
+plt.plot(lossData)
+plt.ylabel("loss")
+plt.xlabel("epochs")
+plt.show()
 
