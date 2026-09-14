@@ -1,4 +1,4 @@
-# NBody-Neural-Network
+# Machine Learning Physics
 
 A simple machine learning project that trains neural networks to predict physics-based motion, including a two-body gravity simulation and a bouncing ball simulation.
 
