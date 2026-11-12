@@ -53,3 +53,7 @@ for epoch in range(20):
     average_loss = total_loss / len(dataset)
     print(f"Epoch {epoch + 1}: loss = {average_loss:.6f}")
 
+model_path = root / "models" / "3body_model.pt"
+model_path.parent.mkdir(parents=True, exist_ok=True)
+torch.save(model.state_dict(), model_path)
+
