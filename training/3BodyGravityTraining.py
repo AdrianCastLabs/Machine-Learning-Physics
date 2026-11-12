@@ -13,7 +13,7 @@ data = np.loadtxt(csv_path, delimiter=",", skiprows=1, dtype=np.float32)
 
 # Select current states and next positions
 inputs = torch.from_numpy(data[:, :12])
-targets = torch.from_numpy(data[:, [12, 13, 16, 17, 20, 21]])
+targets = torch.from_numpy(data[:, 12:])
 
 dataset = TensorDataset(inputs, targets)
 loader = DataLoader(dataset, batch_size=256, shuffle = True)
@@ -22,14 +22,14 @@ loader = DataLoader(dataset, batch_size=256, shuffle = True)
 model = nn.Sequential(
     nn.Linear(12, 64),
     nn.ReLU(),
-    nn.Linear(64, 6),
+    nn.Linear(64, 12),
 )
 
 # Measure error and update the network
 loss_function = nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
-# Train
+# Train the network
 # 　　.o　O　　0　　　O
 # 　┌┐____
 # 　_|  |_|□　 | ┌════┐
@@ -39,11 +39,11 @@ optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 for epoch in range(20):
     total_loss = 0.0
 
-    for current_states, next_positions in loader:
+    for current_states, next_states in loader:
         optimizer.zero_grad()
 
         predictions = model(current_states)
-        loss = loss_function(predictions, next_positions)
+        loss = loss_function(predictions, next_states)
 
         loss.backward()
         optimizer.step()
