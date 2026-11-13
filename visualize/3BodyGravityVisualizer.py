@@ -19,7 +19,7 @@ TEXT_COLOR = (255, 255, 255)
 TRAIL_LENGTH = 0
 NUM_BODIES = 3
 
-path = "../data/gravity_simulation_data_3body.csv"
+path = "../predictions/3body_predictions.csv"
 
 
 def world_to_screen(x, y):
