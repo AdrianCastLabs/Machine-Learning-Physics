@@ -14,7 +14,6 @@ from matplotlib.backends.backend_tkagg import (
 )
 from matplotlib.figure import Figure
 
-
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PATH = ROOT / "predictions" / "3body_predictions.csv"
 
@@ -91,7 +90,7 @@ class GravityViewer:
         self.root = root
         self.root.title("Three-body / Trajectory laboratory")
         self.root.geometry("1380x900")
-        self.root.minsize(1000, 680)
+        self.root.minsize(1000 * 3, 680 * 3)
         self.root.configure(bg=BG)
 
         self.positions = None
@@ -127,49 +126,141 @@ class GravityViewer:
     def configure_style(self):
         style = ttk.Style()
         style.theme_use("clam")
+
+        ui_font = ("DejaVu Sans", 14)
+        ui_font_bold = ("DejaVu Sans", 14, "bold")
+        title_font = ("DejaVu Sans", 20, "bold")
+        mono_font = ("DejaVu Sans Mono", 12)
+
         style.configure(
-            ".", background=PANEL, foreground=TEXT,
-            font=("Segoe UI", 10), borderwidth=0,
+            ".",
+            background=PANEL,
+            foreground=TEXT,
+            font=ui_font,
+            borderwidth=0,
         )
+
         style.configure("TFrame", background=PANEL)
-        style.configure("TLabel", background=PANEL, foreground=TEXT)
-        style.configure("Muted.TLabel", foreground=MUTED)
+
         style.configure(
-            "Title.TLabel", font=("Segoe UI", 19, "bold"),
+            "TLabel",
+            background=PANEL,
+            foreground=TEXT,
+            font=ui_font,
+        )
+
+        style.configure(
+            "Muted.TLabel",
+            background=PANEL,
+            foreground=MUTED,
+            font=ui_font,
+        )
+
+        style.configure(
+            "Title.TLabel",
+            font=title_font,
             background=BG,
+            foreground=TEXT,
         )
+
         style.configure("Header.TFrame", background=BG)
-        style.configure("Header.TLabel", background=BG, foreground=MUTED)
-        style.configure("TButton", padding=(12, 7), background=FIELD)
-        style.map("TButton", background=[("active", "#354252")])
+
         style.configure(
-            "Section.TButton", anchor="w", padding=(12, 10),
-            font=("Segoe UI", 10, "bold"),
+            "Header.TLabel",
+            background=BG,
+            foreground=MUTED,
+            font=ui_font,
         )
-        style.configure("TNotebook", background=BG, tabmargins=(0, 0, 0, 0))
-        style.configure("TNotebook.Tab", padding=(20, 10), background=PANEL)
+
+        style.configure(
+            "TButton",
+            padding=(14, 8),
+            background=FIELD,
+            foreground=TEXT,
+            font=ui_font,
+        )
+        style.map("TButton", background=[("active", "#354252")])
+
+        style.configure(
+            "Section.TButton",
+            anchor="w",
+            padding=(14, 10),
+            font=ui_font_bold,
+            background=FIELD,
+            foreground=TEXT,
+        )
+
+        style.configure(
+            "TNotebook",
+            background=BG,
+            tabmargins=(0, 0, 0, 0),
+        )
+
+        style.configure(
+            "TNotebook.Tab",
+            padding=(18, 8),
+            background=PANEL,
+            foreground=TEXT,
+            font=ui_font,
+        )
+
         style.map(
             "TNotebook.Tab",
             background=[("selected", FIELD)],
             foreground=[("selected", TEXT)],
         )
+
         style.configure(
-            "TCombobox", fieldbackground=FIELD, background=FIELD,
-            foreground=TEXT, arrowcolor=TEXT,
+            "TCombobox",
+            fieldbackground=FIELD,
+            background=FIELD,
+            foreground=TEXT,
+            arrowcolor=TEXT,
+            font=ui_font,
+            padding=(6, 4),
         )
+
         style.map(
             "TCombobox",
             fieldbackground=[("readonly", FIELD)],
             foreground=[("readonly", TEXT)],
         )
-        style.configure("TCheckbutton", background=PANEL)
-        style.map("TCheckbutton", background=[("active", PANEL)])
+
         style.configure(
-            "Treeview", background=BG, fieldbackground=BG,
-            foreground=TEXT, rowheight=28,
+            "TCheckbutton",
+            background=PANEL,
+            foreground=TEXT,
+            font=ui_font,
         )
-        style.configure("Treeview.Heading", background=FIELD, padding=8)
-        style.configure("Horizontal.TScale", background=PANEL, troughcolor=FIELD)
+        style.map("TCheckbutton", background=[("active", PANEL)])
+
+        style.configure(
+            "Treeview",
+            background=BG,
+            fieldbackground=BG,
+            foreground=TEXT,
+            font=mono_font,
+            rowheight=36,
+        )
+
+        style.configure(
+            "Treeview.Heading",
+            background=FIELD,
+            foreground=TEXT,
+            padding=8,
+            font=ui_font_bold,
+        )
+
+        style.configure(
+            "Horizontal.TScale",
+            background=PANEL,
+            troughcolor=FIELD,
+        )
+
+        self.ui_font = ui_font
+        self.ui_font_bold = ui_font_bold
+        self.title_font = title_font
+        self.mono_font = mono_font
 
     def build_interface(self):
         header = ttk.Frame(self.root, style="Header.TFrame", padding=(24, 18))
@@ -224,7 +315,7 @@ class GravityViewer:
         ttk.Label(
             data,
             text="Current sample · positions and source velocities",
-            font=("Segoe UI", 12, "bold"),
+            font=self.ui_font_bold,
         ).pack(anchor="w", pady=(0, 12))
         columns = ("body", "x", "y", "vx", "vy", "speed")
         self.table = ttk.Treeview(
@@ -289,22 +380,22 @@ class GravityViewer:
         velocities = self.section(sections, "VELOCITY", expanded=False)
         for i, name in enumerate(BODY_NAMES):
             for parent, target in (
-                (coordinates, self.coordinate_labels),
-                (velocities, self.velocity_labels),
+                    (coordinates, self.coordinate_labels),
+                    (velocities, self.velocity_labels),
             ):
                 ttk.Label(parent, text=name, foreground=COLORS[i]).pack(anchor="w")
                 variable = tk.StringVar(value="—")
                 target.append(variable)
                 ttk.Label(
                     parent, textvariable=variable,
-                    font=("Consolas", 10), wraplength=245,
+                    font=self.mono_font, wraplength=245,
                 ).pack(anchor="w", pady=(3, 12))
 
         display = self.section(sections, "DISPLAY")
         for text, variable in (
-            ("Coordinate grid", self.show_grid),
-            ("Body labels", self.show_labels),
-            ("Fit visible trajectories", self.follow),
+                ("Coordinate grid", self.show_grid),
+                ("Body labels", self.show_labels),
+                ("Fit visible trajectories", self.follow),
         ):
             ttk.Checkbutton(
                 display, text=text, variable=variable, command=self.render
@@ -509,7 +600,7 @@ class GravityViewer:
     def toggle_play(self, event=None):
         # Do not consume Space when a form control has keyboard focus.
         if event is not None and isinstance(
-            self.root.focus_get(), (ttk.Combobox, ttk.Button, ttk.Checkbutton)
+                self.root.focus_get(), (ttk.Combobox, ttk.Button, ttk.Checkbutton)
         ):
             return
         if self.positions is not None:
@@ -596,6 +687,10 @@ class GravityViewer:
 
 def main():
     root = tk.Tk()
+
+    # Do not use extreme Tk scaling. It enlarges checkboxes/controls unevenly.
+    root.tk.call("tk", "scaling", 2.5)
+
     GravityViewer(root)
     root.mainloop()
 

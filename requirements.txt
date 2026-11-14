@@ -1,4 +1,4 @@
 torch
 numpy
-pygame
 matplotlib
+pygame
